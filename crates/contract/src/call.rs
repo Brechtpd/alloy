@@ -47,8 +47,8 @@ pub trait CallDecoder: private::Sealed {
     #[doc(hidden)]
     fn abi_decode_output(&self, data: Bytes, validate: bool) -> Result<Self::CallOutput>;
 
-    #[doc(hidden)]
-    fn as_debug_field(&self) -> impl std::fmt::Debug;
+    //#[doc(hidden)]
+    //fn as_debug_field(&self) -> impl std::fmt::Debug;
 }
 
 impl CallDecoder for Function {
@@ -59,10 +59,10 @@ impl CallDecoder for Function {
         FunctionExt::abi_decode_output(self, &data, validate).map_err(Error::AbiError)
     }
 
-    #[inline]
-    fn as_debug_field(&self) -> impl std::fmt::Debug {
-        self
-    }
+    //#[inline]
+    //fn as_debug_field(&self) -> impl std::fmt::Debug {
+    //    self
+    //}
 }
 
 impl<C: SolCall> CallDecoder for PhantomData<C> {
@@ -73,10 +73,10 @@ impl<C: SolCall> CallDecoder for PhantomData<C> {
         C::abi_decode_returns(&data, validate).map_err(|e| Error::AbiError(e.into()))
     }
 
-    #[inline]
-    fn as_debug_field(&self) -> impl std::fmt::Debug {
-        std::any::type_name::<C>()
-    }
+    //#[inline]
+    //fn as_debug_field(&self) -> impl std::fmt::Debug {
+    //    std::any::type_name::<C>()
+    //}
 }
 
 impl CallDecoder for () {
@@ -87,10 +87,10 @@ impl CallDecoder for () {
         Ok(data)
     }
 
-    #[inline]
-    fn as_debug_field(&self) -> impl std::fmt::Debug {
-        format_args!("()")
-    }
+    //#[inline]
+    //fn as_debug_field(&self) -> impl std::fmt::Debug {
+    //    format_args!("()")
+    //}
 }
 
 /// A builder for sending a transaction via `eth_sendTransaction`, or calling a contract via
@@ -445,7 +445,7 @@ impl<P, D: CallDecoder> std::fmt::Debug for CallBuilder<P, D> {
             .field("request", &self.request)
             .field("block", &self.block)
             .field("state", &self.state)
-            .field("decoder", &self.decoder.as_debug_field())
+            //.field("decoder", &self.decoder.as_debug_field())
             .finish()
     }
 }

@@ -251,7 +251,7 @@ impl From<Option<Bytes>> for TransactionInput {
 }
 
 /// Error thrown when both `data` and `input` fields are set and not equal.
-#[derive(Debug, Default, thiserror::Error)]
+#[derive(Clone, Copy, Debug, Default, thiserror::Error)]
 #[error("both \"data\" and \"input\" are set and not equal. Please use \"input\" to pass transaction call data")]
 #[non_exhaustive]
 pub struct TransactionInputError;
