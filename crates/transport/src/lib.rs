@@ -55,14 +55,6 @@ mod type_aliases {
     /// Future for RPC-level requests.
     pub type RpcFut<'a, T> =
         std::pin::Pin<Box<dyn std::future::Future<Output = TransportResult<T>> + Send + 'a>>;
-
-    /// `impl Future` with a `Send` bound.
-    #[macro_export]
-    macro_rules! impl_future {
-        (<$($t:tt)+) => {
-            impl (::core::future::Future<$($t)+) + Send
-        };
-    }
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -81,12 +73,4 @@ mod type_aliases {
     /// Future for RPC-level requests.
     pub type RpcFut<'a, T> =
         std::pin::Pin<Box<dyn std::future::Future<Output = TransportResult<T>> + 'a>>;
-
-    /// `impl Future` without a `Send` bound.
-    #[macro_export]
-    macro_rules! impl_future {
-        (<$($t:tt)+) => {
-            impl ::core::future::Future<$($t)+
-        };
-    }
 }

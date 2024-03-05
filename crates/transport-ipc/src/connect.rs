@@ -28,12 +28,18 @@ macro_rules! impl_connect {
                 true
             }
 
-            async fn connect(
-                &self,
-            ) -> Result<alloy_pubsub::ConnectionHandle, alloy_transport::TransportError> {
-                crate::IpcBackend::connect(&self.inner)
-                    .await
-                    .map_err(alloy_transport::TransportErrorKind::custom)
+            fn connect<'a: 'b, 'b>(
+                &'a self,
+            ) -> alloy_transport::Pbf<
+                'b,
+                alloy_pubsub::ConnectionHandle,
+                alloy_transport::TransportError,
+            > {
+                Box::pin(async move {
+                    crate::IpcBackend::connect(&self.inner)
+                        .await
+                        .map_err(alloy_transport::TransportErrorKind::custom)
+                })
             }
         }
     };

@@ -1,6 +1,6 @@
 use crate::RpcClient;
 use alloy_transport::{
-    BoxTransport, BoxTransportConnect, Transport, TransportConnect, TransportResult,
+    BoxTransport, BoxTransportConnect, Transport, TransportConnect, TransportError,
 };
 use tower::{
     layer::util::{Identity, Stack},
@@ -77,7 +77,7 @@ impl<L> ClientBuilder<L> {
     /// Connect a pubsub transport, producing an [`RpcClient`] with the provided
     /// connection.
     #[cfg(feature = "pubsub")]
-    pub async fn pubsub<C>(self, pubsub_connect: C) -> TransportResult<RpcClient<L::Service>>
+    pub async fn pubsub<C>(self, pubsub_connect: C) -> Result<RpcClient<L::Service>, TransportError>
     where
         C: alloy_pubsub::PubSubConnect,
         L: Layer<alloy_pubsub::PubSubFrontend>,
@@ -94,7 +94,7 @@ impl<L> ClientBuilder<L> {
     pub async fn ws(
         self,
         ws_connect: alloy_transport_ws::WsConnect,
-    ) -> TransportResult<RpcClient<L::Service>>
+    ) -> Result<RpcClient<L::Service>, TransportError>
     where
         L: Layer<alloy_pubsub::PubSubFrontend>,
         L::Service: Transport,
@@ -104,7 +104,7 @@ impl<L> ClientBuilder<L> {
 
     /// Connect a transport, producing an [`RpcClient`] with the provided
     /// connection.
-    pub async fn connect<C>(self, connect: C) -> TransportResult<RpcClient<L::Service>>
+    pub async fn connect<C>(self, connect: C) -> Result<RpcClient<L::Service>, TransportError>
     where
         C: TransportConnect,
         L: Layer<C::Transport>,
@@ -116,7 +116,7 @@ impl<L> ClientBuilder<L> {
 
     /// Connect a transport, producing an [`RpcClient`] with a [`BoxTransport`]
     /// connection.
-    pub async fn connect_boxed<C>(self, connect: C) -> TransportResult<RpcClient<L::Service>>
+    pub async fn connect_boxed<C>(self, connect: C) -> Result<RpcClient<L::Service>, TransportError>
     where
         C: BoxTransportConnect,
         L: Layer<BoxTransport>,

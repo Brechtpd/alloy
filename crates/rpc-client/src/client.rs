@@ -220,7 +220,7 @@ mod pubsub_impl {
 
     impl RpcClient<PubSubFrontend> {
         /// Connect to a transport via a [`PubSubConnect`] implementor.
-        pub async fn connect_pubsub<C>(connect: C) -> TransportResult<RpcClient<PubSubFrontend>>
+        pub async fn connect_pubsub<C>(connect: C) -> Result<RpcClient<PubSubFrontend>, TransportError>
         where
             C: PubSubConnect,
         {
