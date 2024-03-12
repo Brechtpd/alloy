@@ -82,7 +82,7 @@ pub trait Decodable2718: Sized {
         }
 
         let ty = buf[0];
-        let buf = &mut &buf[1..];
+        *buf = &mut &buf[1..];
         let tx = Self::typed_decode(ty, buf)?;
 
         let bytes_consumed = remaining_len - buf.len();
